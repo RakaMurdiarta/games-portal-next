@@ -1,10 +1,10 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { v4 } from "uuid";
 import prisma from "@/lib/prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcryptjs";
+import { User } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
   session: {
@@ -63,7 +63,16 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      console.log(token);
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = user.id;
+        token.username = (user as User).name;
+      }
+      if(user){
+        token.id = user.id
+      }
       return { ...token, ...user };
     },
     async session({ session, token }) {
