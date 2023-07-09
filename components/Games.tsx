@@ -25,26 +25,28 @@ const Games = async (props: Props) => {
 
   return (
     <Container>
-      <div className="grid grid-cols-auto-fit gap-x-7 gap-y-10 px-8 pt-10 transition-all duration-1000 delay-500 ease-linear">
-        {filterData &&
-          filterData.map((game) => {
-            const { Id, hero_image } = game;
-            return (
-              <div key={Id} className="">
-                <Link href={"#"} className="">
-                  <Image
-                    className="object-cover rounded-[1rem] aspect-square"
-                    src={hero_image || ""}
-                    alt=""
-                    width={400}
-                    height={400}
-                    loader={customLoader}
-                    unoptimized
-                  />
-                </Link>
-              </div>
-            );
-          })}
+      <div className="flex justify-center items-center">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-6 gap-x-5 place-items-center px-8 pt-10 transition-all duration-1000 delay-500 ease-linear">
+          {filterData &&
+            filterData.map((game) => {
+              const { Id, hero_image } = game;
+              return (
+                <div key={Id}>
+                  <Link href={"#"} className="">
+                    <Image
+                      className="w-full object-cover rounded-[1rem] aspect-square"
+                      src={hero_image || ""}
+                      alt=""
+                      width={300}
+                      height={300}
+                      loader={customLoader}
+                      unoptimized
+                    />
+                  </Link>
+                </div>
+              );
+            })}
+        </div>
       </div>
     </Container>
   );

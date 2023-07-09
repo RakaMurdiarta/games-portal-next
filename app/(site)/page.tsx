@@ -23,7 +23,7 @@ const getListCategoryGames = async () => {
 
 async function getGames() {
   const resp = await prisma.games_list.findMany({
-    take: 500,
+    take: 200,
   });
 
   if (!resp) {

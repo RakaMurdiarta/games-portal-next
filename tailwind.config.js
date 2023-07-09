@@ -31,7 +31,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       gridTemplateColumns : {
-        "auto-fit" : "repeat(auto-fit,minmax(250px,1fr))"
+        "auto-fit" : "repeat(auto-fit,minmax(300px,1fr))"
       }
     },
 
