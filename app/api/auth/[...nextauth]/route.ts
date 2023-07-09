@@ -6,6 +6,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcryptjs";
 import { User } from "@prisma/client";
 
+
+
 export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
@@ -41,8 +43,10 @@ export const authOptions: AuthOptions = {
         }
 
         const user = {
-          id: String(resp?.id),
-          username: resp?.email,
+          id: resp.id,
+          username: resp.username,
+          fullname: resp.fullname,
+          email: resp.email,
         };
 
         console.log(user);
@@ -64,19 +68,18 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log(token);
+      console.log(user);
       if (account) {
         token.accessToken = account.access_token;
         token.id = user.id;
         token.username = (user as User).name;
       }
-      if(user){
-        token.id = user.id
-      }
+
       return { ...token, ...user };
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       session.user = token;
+
       return session;
     },
   },

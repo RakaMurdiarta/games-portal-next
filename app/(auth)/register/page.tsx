@@ -22,7 +22,6 @@ const Login_Form = (props: Props) => {
   } = useForm();
 
   const FormSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     setLoadingBtn(true);
     try {
       const resp = await axios.post("/api/register", data, {
@@ -30,8 +29,6 @@ const Login_Form = (props: Props) => {
           "Content-Type": "application/json",
         },
       });
-
-      console.log(resp);
 
       if (resp.status === 201 && resp.statusText === "Created") {
         router.push("/login");

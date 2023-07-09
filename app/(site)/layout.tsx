@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Provider from "@/lib/sessionProvider/Provider";
 const inter = Inter({ subsets: ["latin"] });
+import { SearcProvider } from "@/context/SearchCtx";
 
 export const metadata = {
   title: "Create Next App",
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Provider>{children}</Provider>
+        <SearcProvider>
+          <Provider>{children}</Provider>
+        </SearcProvider>
       </body>
     </html>
   );
