@@ -18,7 +18,7 @@ type Props = {
 };
 
 const FilterController = (props: Props) => {
-  const { search, setSearch } = UseSearchContext();
+  const { search, setSearch, action, setAction } = UseSearchContext();
 
   const refInput = useRef<HTMLInputElement | null>(null);
 
@@ -27,6 +27,10 @@ const FilterController = (props: Props) => {
   const unique: (string | null)[] = Array.from(
     new Set(props.getDataUnique.map((item) => item.category))
   );
+
+  const setActionFilter = (text: string) => {
+    setAction(text);
+  };
   return (
     <React.Fragment>
       <div className="px-8 py-5 border shadow-inner">
@@ -47,6 +51,9 @@ const FilterController = (props: Props) => {
                     <button
                       className="text-sm font-medium hover:scale-x-105 hover:text-purple-600 py-2 rounded-lg"
                       key={index}
+                      onClick={() =>
+                        setActionFilter((categories as string) ?? "")
+                      }
                     >
                       {categories?.toLocaleUpperCase()}
                     </button>
@@ -60,7 +67,7 @@ const FilterController = (props: Props) => {
                 variant={"secondary"}
                 type="button"
                 onClick={() => {
-                  const text = refInput.current!.value ;
+                  const text = refInput.current!.value;
                   setSearch(text);
                 }}
               >
@@ -73,9 +80,9 @@ const FilterController = (props: Props) => {
       <AnimatePresence>
         {toggle && (
           <motion.div
-            initial={{ x: -1000 }}
+            initial={{ x: -100000 }}
             animate={{ x: 0 }}
-            exit={{ x: -1000 }}
+            exit={{ x: -100000 }}
             transition={{ duration: 0.2, ease: "easeIn" }}
             className="shadow-inner bg-slate-400 z-50"
           >

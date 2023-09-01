@@ -5,12 +5,28 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcryptjs";
 import { User } from "@prisma/client";
-
-
+import { JWT } from "next-auth/jwt";
+import { sign, verify } from "jsonwebtoken";
 
 export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
+  },
+  jwt: {
+    encode: ({ secret, token }) => {
+      const jwtToken = sign(
+        {
+          ...token,
+          exp: Math.floor(Date.now() / 1000) + 60 * 60,
+        },
+        secret
+      );
+      return jwtToken;
+    },
+    decode: async ({ secret, token }) => {
+      const decodedToken = verify(token!, secret);
+      return decodedToken as JWT;
+    },
   },
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -68,9 +84,9 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log(user);
+      console.log(user)
       if (account) {
-        token.accessToken = account.access_token;
+        token.accessToken = account.access_token
         token.id = user.id;
         token.username = (user as User).name;
       }
@@ -78,6 +94,7 @@ export const authOptions: AuthOptions = {
       return { ...token, ...user };
     },
     async session({ session, token, user }) {
+      session.user.accessToken = token.accessToken;
       session.user = token;
 
       return session;
